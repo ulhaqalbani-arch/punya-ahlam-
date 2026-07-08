@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Untukmu 💌</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFF8F1;
+    --pink:#FFD9E6;
+    --rose:#E88CA0;
+    --plum:#4A3342;
+    --butter:#FFE9AE;
+    --sky:#BFE3F5;
+    --line:#f0d8de;
+    --shadow: 0 10px 30px rgba(74,51,66,0.10);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--plum);
+    font-family:'Quicksand', sans-serif;
+    overflow-x:hidden;
+  }
+  ::selection{ background:var(--rose); color:#fff; }
+
+  /* ---------- editable config markers appear in JS at bottom ---------- */
+
+  .heart-trail{
+    position:fixed; top:0; left:0; width:100%; height:100%;
+    pointer-events:none; z-index:9999; overflow:hidden;
+  }
+  .heart-particle{
+    position:absolute; font-size:16px; opacity:0.8;
+    animation: floatUp 1.4s ease-out forwards;
+  }
+  @keyframes floatUp{
+    to{ transform: translateY(-60px) scale(0.6) rotate(20deg); opacity:0; }
+  }
+
+  nav{
+    position:sticky; top:0; z-index:100;
+    display:flex; justify-content:center; gap:28px;
+    padding:16px 20px;
+    background:rgba(255,248,241,0.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav a{
+    color:var(--plum); text-decoration:none; font-weight:600; font-size:14px;
+    letter-spacing:0.04em; text-transform:uppercase; opacity:0.7;
+    transition:opacity .2s, color .2s;
+  }
+  nav a:hover{ opacity:1; color:var(--rose); }
+
+  section{ padding:90px 20px; max-width:1000px; margin:0 auto; position:relative; }
+
+  /* HERO */
+  .hero{
+    min-height:88vh; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center;
+    padding-top:40px;
+  }
+  .eyebrow{
+    font-family:'Caveat', cursive; font-size:26px; color:var(--rose);
+    margin-bottom:6px; transform:rotate(-2deg); display:inline-block;
+  }
+  .hero h1{
+    font-family:'Fraunces', serif; font-style:italic;
+    font-size:clamp(2.6rem, 7vw, 5.2rem);
+    line-height:1.05; margin:0 0 18px;
+    max-width:800px;
+  }
+  .hero h1 .accent{ font-family:'Caveat', cursive; font-style:normal; color:var(--rose); font-weight:700; }
+  .hero p.sub{
+    font-size:17px; max-width:480px; opacity:0.75; margin:0 auto 34px; line-height:1.6;
+  }
+  .scroll-hint{
+    font-family:'Caveat', cursive; font-size:20px; color:var(--rose);
+    animation: bob 2s ease-in-out infinite;
+  }
+  @keyframes bob{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(8px);} }
+
+  .divider{
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    margin:0 0 12px; opacity:0.5; font-size:13px; letter-spacing:0.15em;
+    text-transform:uppercase; font-weight:600;
+  }
+  .divider::before, .divider::after{ content:""; width:40px; height:1px; background:var(--rose); }
+
+  h2.section-title{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:600;
+    font-size:clamp(2rem, 4vw, 2.8rem);
+    text-align:center; margin:0 0 50px;
+  }
+
+  /* COUNTDOWN */
+  .countdown-wrap{ text-align:center; }
+  .countdown-card{
+    background:linear-gradient(135deg, var(--pink), var(--sky));
+    border-radius:28px; padding:44px 24px; box-shadow:var(--shadow);
+    max-width:640px; margin:0 auto;
+  }
+  .countdown-label{ font-family:'Caveat', cursive; font-size:24px; margin-bottom:14px; }
+  .countdown-grid{ display:flex; justify-content:center; gap:14px; flex-wrap:wrap; }
+  .countdown-box{
+    background:#fff; border-radius:16px; padding:16px 18px; min-width:76px;
+    box-shadow:0 6px 16px rgba(74,51,66,0.12);
+  }
+  .countdown-box .num{ font-family:'Fraunces', serif; font-size:2.1rem; font-weight:600; display:block; }
+  .countdown-box .lbl{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; opacity:0.6; }
+  #countdown-target-note{ margin-top:16px; font-size:13px; opacity:0.6; }
+
+  /* TIMELINE */
+  .timeline{ position:relative; margin-top:20px; }
+  .timeline::before{
+    content:""; position:absolute; left:20px; top:0; bottom:0; width:2px;
+    background:repeating-linear-gradient(to bottom, var(--rose) 0 8px, transparent 8px 16px);
+  }
+  .t-item{ position:relative; padding-left:60px; margin-bottom:42px; }
+  .t-item:last-child{ margin-bottom:0; }
+  .t-dot{
+    position:absolute; left:11px; top:2px; width:20px; height:20px; border-radius:50%;
+    background:var(--rose); border:4px solid var(--cream); box-shadow:0 0 0 2px var(--rose);
+  }
+  .t-date{
+    font-family:'Caveat', cursive; font-size:22px; color:var(--rose); font-weight:700;
+  }
+  .t-title{ font-family:'Fraunces', serif; font-size:1.35rem; margin:2px 0 6px; }
+  .t-desc{ font-size:14.5px; line-height:1.6; opacity:0.75; max-width:560px; }
+
+  /* GALLERY */
+  .gallery{
+    display:flex; flex-wrap:wrap; gap:36px; justify-content:center; padding-top:10px;
+  }
+  .polaroid{
+    background:#fff; padding:14px 14px 40px; width:210px;
+    box-shadow:var(--shadow); position:relative;
+    transition: transform .25s ease;
+  }
+  .polaroid:nth-child(1){ transform:rotate(-6deg); }
+  .polaroid:nth-child(2){ transform:rotate(4deg); }
+  .polaroid:nth-child(3){ transform:rotate(-3deg); }
+  .polaroid:nth-child(4){ transform:rotate(5deg); }
+  .polaroid:hover{ transform:scale(1.06) rotate(0deg); z-index:5; }
+  .polaroid .tape{
+    position:absolute; top:-14px; left:50%; transform:translateX(-50%) rotate(-4deg);
+    width:70px; height:26px; background:var(--butter); opacity:0.85;
+    box-shadow:0 2px 4px rgba(0,0,0,0.08);
+  }
+  .polaroid .frame{
+    width:100%; aspect-ratio:1/1; background:linear-gradient(135deg, var(--pink), var(--sky));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Caveat', cursive; font-size:18px; color:var(--plum); opacity:0.6; text-align:center;
+    padding:10px;
+  }
+  .polaroid .cap{
+    font-family:'Caveat', cursive; font-size:19px; text-align:center; margin-top:10px;
+  }
+
+  /* LOVE NOTES */
+  .notes-carousel{
+    position:relative; max-width:600px; margin:0 auto; text-align:center;
+    background:#fff; border-radius:24px; padding:46px 34px; box-shadow:var(--shadow);
+    min-height:180px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  }
+  .note-text{
+    font-family:'Fraunces', serif; font-style:italic; font-size:1.3rem; line-height:1.55;
+  }
+  .note-controls{ margin-top:26px; display:flex; gap:16px; align-items:center; }
+  .note-controls button{
+    border:none; background:var(--pink); color:var(--plum); width:38px; height:38px;
+    border-radius:50%; font-size:16px; cursor:pointer; transition:background .2s;
+  }
+  .note-controls button:hover{ background:var(--rose); color:#fff; }
+  .note-dots{ display:flex; gap:6px; }
+  .note-dots span{ width:6px; height:6px; border-radius:50%; background:var(--line); display:inline-block; }
+  .note-dots span.active{ background:var(--rose); }
+
+  /* MESSAGE / LETTER */
+  .letter{
+    background:#fff; border-radius:24px; padding:50px 40px; box-shadow:var(--shadow);
+    max-width:640px; margin:0 auto; font-family:'Fraunces', serif; font-size:1.05rem; line-height:1.85;
+  }
+  .letter .sign{ font-family:'Caveat', cursive; font-size:28px; color:var(--rose); margin-top:20px; display:block; }
+
+  footer{
+    text-align:center; padding:50px 20px 70px; font-family:'Caveat', cursive; font-size:20px; opacity:0.6;
+  }
+
+  @media (max-width:640px){
+    section{ padding:64px 16px; }
+    .polaroid{ width:160px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="heart-trail" id="heartTrail"></div>
+
+<nav>
+  <a href="#home">Home</a>
+  <a href="#timeline">Cerita Kita</a>
+  <a href="#gallery">Galeri</a>
+  <a href="#notes">Notes</a>
+  <a href="#letter">Surat</a>
+</nav>
+
+<section class="hero" id="home">
+  <span class="eyebrow">hai, ini buat kamu</span>
+  <h1>Setiap cerita punya tokoh utama,<br>dan di ceritaku itu <span class="accent">kamu</span>.</h1>
+  <p class="sub">[Ganti kalimat ini dengan sesuatu yang cuma kamu berdua yang ngerti maksudnya. Bisa quote, bisa candaan, bisa apa aja.]</p>
+  <span class="scroll-hint">↓ scroll dulu deh ↓</span>
+</section>
+
+<section class="countdown-wrap">
+  <div class="divider">momen spesial</div>
+  <h2 class="section-title">Menuju hari itu lagi</h2>
+  <div class="countdown-card">
+    <div class="countdown-label">[Nama momennya — misal: Anniversary kita ke-]</div>
+    <div class="countdown-grid">
+      <div class="countdown-box"><span class="num" id="cd-days">00</span><span class="lbl">Hari</span></div>
+      <div class="countdown-box"><span class="num" id="cd-hours">00</span><span class="lbl">Jam</span></div>
+      <div class="countdown-box"><span class="num" id="cd-mins">00</span><span class="lbl">Menit</span></div>
+      <div class="countdown-box"><span class="num" id="cd-secs">00</span><span class="lbl">Detik</span></div>
+    </div>
+    <div id="countdown-target-note">Menuju [tanggal] — edit di TARGET_DATE dalam kode</div>
+  </div>
+</section>
+
+<section id="timeline">
+  <div class="divider">flashback</div>
+  <h2 class="section-title">Cerita Kita</h2>
+  <div class="timeline" id="timelineList"></div>
+</section>
+
+<section id="gallery">
+  <div class="divider">kenangan</div>
+  <h2 class="section-title">Galeri Kecil Kita</h2>
+  <div class="gallery" id="galleryList"></div>
+</section>
+
+<section id="notes">
+  <div class="divider">buat kamu baca pelan-pelan</div>
+  <h2 class="section-title">Love Notes</h2>
+  <div class="notes-carousel">
+    <div class="note-text" id="noteText">[note 1]</div>
+    <div class="note-controls">
+      <button id="notePrev">‹</button>
+      <div class="note-dots" id="noteDots"></div>
+      <button id="noteNext">›</button>
+    </div>
+  </div>
+</section>
+
+<section id="letter">
+  <div class="divider">yang terakhir</div>
+  <h2 class="section-title">Sepucuk Surat</h2>
+  <div class="letter">
+    [Tulis surat singkat di sini. Ceritain kenapa kamu bikin web ini, apa yang kamu rasain, atau apapun yang pengen kamu sampein. Nggak perlu panjang, yang penting jujur.]
+    <span class="sign">— [nama kamu]</span>
+  </div>
+</section>
+
+<footer>made with 🩷 for [nama pacar]</footer>
+
+<script>
+/* ============================================================
+   EDIT SEMUA KONTEN DI SINI — nggak perlu sentuh HTML/CSS
+   ============================================================ */
+
+// 1) Countdown — set tanggal & jam tujuan (format: 'YYYY-MM-DDTHH:mm:ss')
+const TARGET_DATE = "2026-12-31T00:00:00";
+
+// 2) Timeline cerita kalian
+const TIMELINE = [
+  { date: "[tanggal]", title: "[judul momen 1]", desc: "[cerita singkat momennya]" },
+  { date: "[tanggal]", title: "[judul momen 2]", desc: "[cerita singkat momennya]" },
+  { date: "[tanggal]", title: "[judul momen 3]", desc: "[cerita singkat momennya]" },
+];
+
+// 3) Galeri foto — ganti "img" dengan URL foto asli kalau ada, atau biarkan kosong buat placeholder
+const GALLERY = [
+  { img: "", caption: "[caption foto 1]" },
+  { img: "", caption: "[caption foto 2]" },
+  { img: "", caption: "[caption foto 3]" },
+  { img: "", caption: "[caption foto 4]" },
+];
+
+// 4) Love notes — bisa nambah/kurang sebanyak yang kamu mau
+const NOTES = [
+  "[love note 1 — kalimat manis singkat]",
+  "[love note 2]",
+  "[love note 3]",
+];
+
+/* ============================================================ */
+
+function pad(n){ return String(n).padStart(2,'0'); }
+
+function updateCountdown(){
+  const target = new Date(TARGET_DATE).getTime();
+  const now = new Date().getTime();
+  let diff = target - now;
+  if(diff < 0) diff = 0;
+  const days = Math.floor(diff / (1000*60*60*24));
+  const hours = Math.floor((diff / (1000*60*60)) % 24);
+  const mins = Math.floor((diff / (1000*60)) % 60);
+  const secs = Math.floor((diff / 1000) % 60);
+  document.getElementById('cd-days').textContent = pad(days);
+  document.getElementById('cd-hours').textContent = pad(hours);
+  document.getElementById('cd-mins').textContent = pad(mins);
+  document.getElementById('cd-secs').textContent = pad(secs);
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+const tlEl = document.getElementById('timelineList');
+TIMELINE.forEach(item => {
+  const div = document.createElement('div');
+  div.className = 't-item';
+  div.innerHTML = `
+    <div class="t-dot"></div>
+    <div class="t-date">${item.date}</div>
+    <div class="t-title">${item.title}</div>
+    <div class="t-desc">${item.desc}</div>
+  `;
+  tlEl.appendChild(div);
+});
+
+const galEl = document.getElementById('galleryList');
+GALLERY.forEach(item => {
+  const div = document.createElement('div');
+  div.className = 'polaroid';
+  div.innerHTML = `
+    <div class="tape"></div>
+    <div class="frame">${item.img ? `<img src="${item.img}" style="width:100%;height:100%;object-fit:cover;">` : 'taruh foto di sini'}</div>
+    <div class="cap">${item.caption}</div>
+  `;
+  galEl.appendChild(div);
+});
+
+let noteIdx = 0;
+const noteTextEl = document.getElementById('noteText');
+const noteDotsEl = document.getElementById('noteDots');
+NOTES.forEach((_, i) => {
+  const dot = document.createElement('span');
+  if(i===0) dot.className = 'active';
+  noteDotsEl.appendChild(dot);
+});
+function renderNote(){
+  noteTextEl.textContent = NOTES[noteIdx];
+  [...noteDotsEl.children].forEach((d,i) => d.className = i===noteIdx ? 'active' : '');
+}
+document.getElementById('notePrev').onclick = () => { noteIdx = (noteIdx-1+NOTES.length)%NOTES.length; renderNote(); };
+document.getElementById('noteNext').onclick = () => { noteIdx = (noteIdx+1)%NOTES.length; renderNote(); };
+renderNote();
+
+// heart trail on click
+document.addEventListener('click', (e) => {
+  const heart = document.createElement('div');
+  heart.className = 'heart-particle';
+  heart.textContent = ['💕','💖','🩷','✨'][Math.floor(Math.random()*4)];
+  heart.style.left = e.clientX + 'px';
+  heart.style.top = e.clientY + 'px';
+  document.getElementById('heartTrail').appendChild(heart);
+  setTimeout(() => heart.remove(), 1400);
+});
+</script>
+
+</body>
+</html>
